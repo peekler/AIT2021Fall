@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">AITTimeDemo</string>
+
+    <string name="button_show">Show time</string>
+    <string name="error_large_number">This filed is too large</string>
+
 </resources>

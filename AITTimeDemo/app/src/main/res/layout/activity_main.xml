@@ -7,23 +7,46 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/tvData"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="26sp"
-        android:textColor="#FF1F2A"
-        android:text="Hello AIT!"/>
+    <!-- This is a comment -->
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        card_view:cardBackgroundColor="#fff6a0"
+        card_view:cardCornerRadius="20dp"
+        card_view:cardElevation="2dp"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="300dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hello AIT!"
+                android:textColor="#FF1F2A"
+                android:textSize="26sp" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
 
     <Button
         android:id="@+id/btnTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Show time"/>
+        android:text="@string/button_show" />
 
     <EditText
         android:id="@+id/etNum"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:inputType="number" />
 
 </LinearLayout>
