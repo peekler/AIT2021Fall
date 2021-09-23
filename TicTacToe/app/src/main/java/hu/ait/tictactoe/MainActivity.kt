@@ -21,7 +21,15 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    fun showTextMessage(msg: String) {
+        binding.tvPlayer.text = msg
+    }
+
     fun showMessage(msg: String) {
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
+    }
+
+    fun isFlagMode() : Boolean {
+        return binding.tgbtnIsFlag.isChecked()
     }
 }

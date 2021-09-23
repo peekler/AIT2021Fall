@@ -5,23 +5,50 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+
+    android:background="#B1E9E3"
+
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:layout_margin="40dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
 
-    <hu.ait.tictactoe.ui.TicTacToeView
-        android:id="@+id/ticTacToeView"
-        android:layout_width="300dp"
-        android:layout_height="300dp" />
+        <hu.ait.tictactoe.ui.TicTacToeView
+            android:id="@+id/ticTacToeView"
+            android:layout_width="300dp"
+            android:layout_height="300dp" />
+
+    </LinearLayout>
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tvPlayer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="The next player is O"
+            android:textSize="26sp" />
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
 
     <Button
         android:id="@+id/btnReset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Reset"/>
+        android:text="@string/btn_reset" />
 
+
+    <ToggleButton
+        android:id="@+id/tgbtnIsFlag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textOn="Try mode"
+        android:textOff="Flag mode"/>
 
 </LinearLayout>
