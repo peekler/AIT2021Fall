@@ -2,9 +2,11 @@ package hu.ait.tictactoe
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
 import android.widget.Toast
 import hu.ait.tictactoe.databinding.ActivityMainBinding
 import hu.ait.tictactoe.model.TicTacToeModel
+import hu.ait.tictactoe.ui.TicTacToeView
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,6 +22,9 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
+
+
 
     fun showTextMessage(msg: String) {
         binding.tvPlayer.text = msg
