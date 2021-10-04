@@ -7,14 +7,14 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="?attr/actionBarSize"
-        android:background="@color/teal_200"
-        app:theme="@style/ToolBarStyle"
-        />
+        android:background="@color/purple_500"
+        android:theme="@style/ToolBarStyle"
+        android:minHeight="?attr/actionBarSize"/>
 
     <TextView
         android:layout_width="wrap_content"
