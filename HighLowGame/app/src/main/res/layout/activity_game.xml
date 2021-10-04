@@ -7,17 +7,47 @@
     android:orientation="vertical"
     tools:context=".GameActivity">
 
-    <EditText
-        android:id="@+id/etNumber"
-        android:inputType="number"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/outlinedTextField"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter number here"/>
+        android:layout_margin="20dp"
+        android:hint="Enter username here"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:hint="Enter number here"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/etNumber"
+            android:inputType="number"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
     <Button
         android:id="@+id/btnGuess"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Guess"/>
+        android:text="Guess"
+        app:strokeColor="#0000FF"
+        app:strokeWidth="1dp"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        />
+
     <TextView
         android:id="@+id/tvResult"
         android:textSize="26sp"

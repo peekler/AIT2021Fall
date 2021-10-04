@@ -10,6 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HighLowGame">
         <activity
+            android:name=".ResultActivity"
+            android:theme="@style/Theme.AppCompat.Dialog"
+            android:exported="true" />
+        <activity
             android:name=".GameActivity"
             android:exported="true" />
         <activity
