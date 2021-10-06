@@ -37,7 +37,8 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+    private val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            result: ActivityResult ->
         if (result.resultCode == Activity.RESULT_OK) {
             val intent = result.data
             var data = "Result: ${intent?.getStringExtra(KEY_ANS)}"
