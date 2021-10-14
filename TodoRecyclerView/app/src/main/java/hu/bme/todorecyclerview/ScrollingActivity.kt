@@ -7,12 +7,19 @@ import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import hu.bme.todorecyclerview.adapter.TodoRecyclerAdapter
+import hu.bme.todorecyclerview.data.Todo
 import hu.bme.todorecyclerview.databinding.ActivityScrollingBinding
+import hu.bme.todorecyclerview.dialog.TodoDialog
 
-class ScrollingActivity : AppCompatActivity() {
+class ScrollingActivity : AppCompatActivity(), TodoDialog.TodoHandler {
 
     private lateinit var binding: ActivityScrollingBinding
+    private lateinit var adapter: TodoRecyclerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,12 +30,29 @@ class ScrollingActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.toolbar))
         binding.toolbarLayout.title = title
         binding.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+            TodoDialog().show(supportFragmentManager, "TODO_DIALOG")
         }
 
+        adapter = TodoRecyclerAdapter(this)
+        binding.recylerTodo.adapter = adapter
 
-        binding.recylerTodo.adapter = TodoRecyclerAdapter(this)
+        //var divider = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
+        //binding.recylerTodo.addItemDecoration(divider)
+
+        //binding.recylerTodo.layoutManager = GridLayoutManager(this, 2)
+        //binding.recylerTodo.layoutManager = StaggeredGridLayoutManager(2,
+        //    StaggeredGridLayoutManager.VERTICAL)
+    }
+
+    override fun todoCreated(newTodo: Todo) {
+        adapter.addTodo(newTodo)
+
+        Snackbar.make(binding.root, "Todo created", Snackbar.LENGTH_LONG).setAction(
+            "Undo"
+        ) {
+            adapter.deleteTodo(adapter.todoItems.lastIndex)
+        }.show()
+
     }
 
 

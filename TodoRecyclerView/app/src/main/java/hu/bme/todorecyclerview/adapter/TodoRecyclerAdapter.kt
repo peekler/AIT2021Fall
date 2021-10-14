@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import hu.bme.todorecyclerview.R
 import hu.bme.todorecyclerview.data.Todo
+import hu.bme.todorecyclerview.databinding.TodoRowBinding
 
 class TodoRecyclerAdapter : RecyclerView.Adapter<TodoRecyclerAdapter.ViewHolder> {
 
@@ -27,20 +28,40 @@ class TodoRecyclerAdapter : RecyclerView.Adapter<TodoRecyclerAdapter.ViewHolder>
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val todoRowView = LayoutInflater.from(context).inflate(R.layout.todo_row, parent, false)
-        return ViewHolder(todoRowView)
+        val todoRowBinding = TodoRowBinding.inflate(LayoutInflater.from(context),
+            parent, false)
+        return ViewHolder(todoRowBinding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val currentTodo = todoItems[position]
-        holder.tvDate.text = currentTodo.createDate
-        holder.cbDone.text = currentTodo.title
-        holder.cbDone.isChecked = currentTodo.done
+        val currentTodo = todoItems[holder.adapterPosition]
+        holder.bind(currentTodo)
+
+        holder.todoRowBinding.btnDelete.setOnClickListener {
+            deleteTodo(holder.adapterPosition)
+        }
     }
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var tvDate = itemView.findViewById<TextView>(R.id.tvDate)
-        var cbDone = itemView.findViewById<CheckBox>(R.id.cbDone)
+    fun addTodo(newTodo: Todo) {
+        todoItems.add(newTodo)
+        //notifyDataSetChanged()
+        notifyItemInserted(todoItems.lastIndex)
     }
+
+    fun deleteTodo(index: Int) {
+        todoItems.removeAt(index)
+        //notifyDataSetChanged()
+        notifyItemRemoved(index)
+    }
+
+    inner class ViewHolder(val todoRowBinding: TodoRowBinding) : RecyclerView.ViewHolder(todoRowBinding.root) {
+        fun bind(todo: Todo) {
+            todoRowBinding.tvDate.text = todo.createDate
+            todoRowBinding.cbDone.text = todo.title
+            todoRowBinding.cbDone.isChecked = todo.done
+        }
+    }
+
+
 
 }

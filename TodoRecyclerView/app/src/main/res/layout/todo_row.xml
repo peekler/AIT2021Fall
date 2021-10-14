@@ -1,23 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardView"
     android:layout_height="wrap_content"
-    android:background="#FFEB3B"
+    android:layout_width="match_parent"
     android:layout_margin="10dp"
-    >
+    card_view:cardBackgroundColor="#fff6a0"
+    card_view:cardCornerRadius="20dp"
+    card_view:cardElevation="5dp">
 
-    <TextView
-        android:id="@+id/tvDate"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="date"
-        android:textSize="24sp" />
+        android:layout_margin="10dp"
+        android:orientation="vertical">
 
-    <CheckBox
-        android:id="@+id/cbDone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="todo" />
+        <TextView
+            android:id="@+id/tvDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="date"
+            android:textSize="24sp" />
 
-</LinearLayout>
+        <CheckBox
+            android:id="@+id/cbDone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="todo" />
+
+        <Button
+            android:id="@+id/btnDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delete"/>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
