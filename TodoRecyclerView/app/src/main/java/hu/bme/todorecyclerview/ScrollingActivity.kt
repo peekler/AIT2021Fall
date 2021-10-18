@@ -10,11 +10,13 @@ import android.view.MenuItem
 import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import hu.bme.todorecyclerview.adapter.TodoRecyclerAdapter
 import hu.bme.todorecyclerview.data.Todo
 import hu.bme.todorecyclerview.databinding.ActivityScrollingBinding
 import hu.bme.todorecyclerview.dialog.TodoDialog
+import hu.bme.todorecyclerview.touch.TodoRecyclerTouchCallback
 
 class ScrollingActivity : AppCompatActivity(), TodoDialog.TodoHandler {
 
@@ -42,6 +44,10 @@ class ScrollingActivity : AppCompatActivity(), TodoDialog.TodoHandler {
         //binding.recylerTodo.layoutManager = GridLayoutManager(this, 2)
         //binding.recylerTodo.layoutManager = StaggeredGridLayoutManager(2,
         //    StaggeredGridLayoutManager.VERTICAL)
+
+        val touchCallbakList = TodoRecyclerTouchCallback(adapter)
+        val itemTouchHelper = ItemTouchHelper(touchCallbakList)
+        itemTouchHelper.attachToRecyclerView(binding.recylerTodo)
     }
 
     override fun todoCreated(newTodo: Todo) {

@@ -10,8 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import hu.bme.todorecyclerview.R
 import hu.bme.todorecyclerview.data.Todo
 import hu.bme.todorecyclerview.databinding.TodoRowBinding
+import hu.bme.todorecyclerview.touch.TodoTouchHelperCallback
+import java.util.*
 
-class TodoRecyclerAdapter : RecyclerView.Adapter<TodoRecyclerAdapter.ViewHolder> {
+class TodoRecyclerAdapter : RecyclerView.Adapter<TodoRecyclerAdapter.ViewHolder>, TodoTouchHelperCallback {
 
     val context: Context
     var todoItems = mutableListOf<Todo>(
@@ -52,6 +54,15 @@ class TodoRecyclerAdapter : RecyclerView.Adapter<TodoRecyclerAdapter.ViewHolder>
         todoItems.removeAt(index)
         //notifyDataSetChanged()
         notifyItemRemoved(index)
+    }
+
+    override fun onDismissed(position: Int) {
+        deleteTodo(position)
+    }
+
+    override fun onItemMoved(fromPosition: Int, toPosition: Int) {
+        Collections.swap(todoItems, fromPosition, toPosition)
+        notifyItemMoved(fromPosition, toPosition)
     }
 
     inner class ViewHolder(val todoRowBinding: TodoRowBinding) : RecyclerView.ViewHolder(todoRowBinding.root) {
