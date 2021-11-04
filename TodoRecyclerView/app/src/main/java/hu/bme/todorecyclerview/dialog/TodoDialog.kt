@@ -43,7 +43,8 @@ class TodoDialog : DialogFragment() {
         dialogBuilder.setPositiveButton("Create") {
             dialog, which ->
 
-            val newTodo = Todo(todoDialogBinding.etTodoText.text.toString(),
+            val newTodo = Todo(null,
+                todoDialogBinding.etTodoText.text.toString(),
                 Date(System.currentTimeMillis()).toString(),
                 todoDialogBinding.cbTodoDone.isChecked)
             todoHandler.todoCreated(newTodo)

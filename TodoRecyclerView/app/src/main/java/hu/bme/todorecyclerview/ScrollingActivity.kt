@@ -8,15 +8,18 @@ import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import hu.bme.todorecyclerview.adapter.TodoRecyclerAdapter
+import hu.bme.todorecyclerview.data.AppDatabase
 import hu.bme.todorecyclerview.data.Todo
 import hu.bme.todorecyclerview.databinding.ActivityScrollingBinding
 import hu.bme.todorecyclerview.dialog.TodoDialog
 import hu.bme.todorecyclerview.touch.TodoRecyclerTouchCallback
+import kotlin.concurrent.thread
 
 class ScrollingActivity : AppCompatActivity(), TodoDialog.TodoHandler {
 
@@ -35,31 +38,28 @@ class ScrollingActivity : AppCompatActivity(), TodoDialog.TodoHandler {
             TodoDialog().show(supportFragmentManager, "TODO_DIALOG")
         }
 
+        initTodoRecyclerView()
+    }
+
+    private fun initTodoRecyclerView() {
         adapter = TodoRecyclerAdapter(this)
         binding.recylerTodo.adapter = adapter
 
-        //var divider = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
-        //binding.recylerTodo.addItemDecoration(divider)
-
-        //binding.recylerTodo.layoutManager = GridLayoutManager(this, 2)
-        //binding.recylerTodo.layoutManager = StaggeredGridLayoutManager(2,
-        //    StaggeredGridLayoutManager.VERTICAL)
+        var liveDataTodos = AppDatabase.getInstance(this).todoDao().getAllTodo()
+        liveDataTodos.observe(this, Observer { items ->
+            adapter.submitList(items)
+        })
 
         val touchCallbakList = TodoRecyclerTouchCallback(adapter)
         val itemTouchHelper = ItemTouchHelper(touchCallbakList)
         itemTouchHelper.attachToRecyclerView(binding.recylerTodo)
     }
 
+
+
     override fun todoCreated(newTodo: Todo) {
-        adapter.addTodo(newTodo)
-
-        Snackbar.make(binding.root, "Todo created", Snackbar.LENGTH_LONG).setAction(
-            "Undo"
-        ) {
-            adapter.deleteTodo(adapter.todoItems.lastIndex)
-        }.show()
-
+        thread {
+            AppDatabase.getInstance(this).todoDao().addTodo(newTodo)
+        }
     }
-
-
 }

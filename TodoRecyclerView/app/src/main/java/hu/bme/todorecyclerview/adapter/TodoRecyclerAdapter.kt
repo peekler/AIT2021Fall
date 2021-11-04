@@ -1,32 +1,30 @@
 package hu.bme.todorecyclerview.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import hu.bme.todorecyclerview.R
+import hu.bme.todorecyclerview.ScrollingActivity
+import hu.bme.todorecyclerview.data.AppDatabase
 import hu.bme.todorecyclerview.data.Todo
 import hu.bme.todorecyclerview.databinding.TodoRowBinding
 import hu.bme.todorecyclerview.touch.TodoTouchHelperCallback
 import java.util.*
+import kotlin.concurrent.thread
 
-class TodoRecyclerAdapter : RecyclerView.Adapter<TodoRecyclerAdapter.ViewHolder>, TodoTouchHelperCallback {
+class TodoRecyclerAdapter : ListAdapter<Todo, TodoRecyclerAdapter.ViewHolder>, TodoTouchHelperCallback {
 
     val context: Context
-    var todoItems = mutableListOf<Todo>(
-        Todo("Do the dishes", "2020. 10. 11.", false),
-        Todo("Do the dishes", "2020. 10. 11.", false)
-    )
 
-    constructor(context: Context) : super() {
+    constructor(context: Context) : super(TodoDiffCallback()) {
         this.context = context
-    }
-
-    override fun getItemCount(): Int {
-        return todoItems.size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -36,7 +34,7 @@ class TodoRecyclerAdapter : RecyclerView.Adapter<TodoRecyclerAdapter.ViewHolder>
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val currentTodo = todoItems[holder.adapterPosition]
+        val currentTodo = getItem(holder.adapterPosition)
         holder.bind(currentTodo)
 
         holder.todoRowBinding.btnDelete.setOnClickListener {
@@ -44,16 +42,11 @@ class TodoRecyclerAdapter : RecyclerView.Adapter<TodoRecyclerAdapter.ViewHolder>
         }
     }
 
-    fun addTodo(newTodo: Todo) {
-        todoItems.add(newTodo)
-        //notifyDataSetChanged()
-        notifyItemInserted(todoItems.lastIndex)
-    }
 
     fun deleteTodo(index: Int) {
-        todoItems.removeAt(index)
-        //notifyDataSetChanged()
-        notifyItemRemoved(index)
+        thread {
+            AppDatabase.getInstance(context).todoDao().deleteTodo(getItem(index))
+        }
     }
 
     override fun onDismissed(position: Int) {
@@ -61,7 +54,6 @@ class TodoRecyclerAdapter : RecyclerView.Adapter<TodoRecyclerAdapter.ViewHolder>
     }
 
     override fun onItemMoved(fromPosition: Int, toPosition: Int) {
-        Collections.swap(todoItems, fromPosition, toPosition)
         notifyItemMoved(fromPosition, toPosition)
     }
 
@@ -72,7 +64,16 @@ class TodoRecyclerAdapter : RecyclerView.Adapter<TodoRecyclerAdapter.ViewHolder>
             todoRowBinding.cbDone.isChecked = todo.done
         }
     }
+}
 
 
+class TodoDiffCallback : DiffUtil.ItemCallback<Todo>() {
+    override fun areItemsTheSame(oldItem: Todo, newItem: Todo): Boolean {
+        return oldItem._id == newItem._id
+    }
 
+    @SuppressLint("DiffUtilEquals")
+    override fun areContentsTheSame(oldItem: Todo, newItem: Todo): Boolean {
+        return oldItem == newItem
+    }
 }
