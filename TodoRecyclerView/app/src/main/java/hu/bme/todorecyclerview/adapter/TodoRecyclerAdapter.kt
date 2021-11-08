@@ -40,6 +40,18 @@ class TodoRecyclerAdapter : ListAdapter<Todo, TodoRecyclerAdapter.ViewHolder>, T
         holder.todoRowBinding.btnDelete.setOnClickListener {
             deleteTodo(holder.adapterPosition)
         }
+
+        holder.todoRowBinding.btnEdit.setOnClickListener {
+            // Edit...
+            (context as ScrollingActivity).showEditDialog(currentTodo)
+        }
+
+        holder.todoRowBinding.cbDone.setOnClickListener {
+            currentTodo.done = holder.todoRowBinding.cbDone.isChecked
+            thread {
+                AppDatabase.getInstance(context).todoDao().updateTodo(currentTodo)
+            }
+        }
     }
 
 
