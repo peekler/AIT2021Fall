@@ -62,7 +62,7 @@ class ScrollingActivity : AppCompatActivity(), TodoDialog.TodoHandler {
 
     private fun initTodoRecyclerView() {
         adapter = TodoRecyclerAdapter(this)
-        binding.recylerTodo.adapter = adapter
+        binding.recyclerTodo.adapter = adapter
 
         var liveDataTodos = AppDatabase.getInstance(this).todoDao().getAllTodo()
         liveDataTodos.observe(this, Observer { items ->
@@ -71,7 +71,7 @@ class ScrollingActivity : AppCompatActivity(), TodoDialog.TodoHandler {
 
         val touchCallbakList = TodoRecyclerTouchCallback(adapter)
         val itemTouchHelper = ItemTouchHelper(touchCallbakList)
-        itemTouchHelper.attachToRecyclerView(binding.recylerTodo)
+        itemTouchHelper.attachToRecyclerView(binding.recyclerTodo)
     }
 
     private fun saveThatAppWasStarted() {
