@@ -6,6 +6,7 @@
         <entry key="app/src/main/res/layout/activity_create_post.xml" value="0.21965579710144928" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2734375" />
         <entry key="app/src/main/res/layout/activity_scrolling.xml" value="0.21965579710144928" />
+        <entry key="app/src/main/res/layout/post_row.xml" value="0.5" />
       </map>
     </option>
   </component>
