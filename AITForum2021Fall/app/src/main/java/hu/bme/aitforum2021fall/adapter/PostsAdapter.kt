@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.firebase.firestore.FirebaseFirestore
 import hu.bme.aitforum2021fall.CreatePostActivity
 import hu.bme.aitforum2021fall.ScrollingActivity
@@ -40,6 +41,14 @@ class PostsAdapter : RecyclerView.Adapter<PostsAdapter.ViewHolder>  {
         holder.binding.btnDelete.setOnClickListener {
             removePost(holder.adapterPosition)
         }
+
+        if (post.imgUrl.isNotEmpty()) {
+            Glide.with(context).load(post.imgUrl).into(holder.binding.ivPhoto)
+            holder.binding.ivPhoto.visibility = View.VISIBLE
+        } else {
+            holder.binding.ivPhoto.visibility = View.GONE
+        }
+
 
     }
 
