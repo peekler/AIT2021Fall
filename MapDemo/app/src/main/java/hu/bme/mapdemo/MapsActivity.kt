@@ -2,6 +2,8 @@ package hu.bme.mapdemo
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.location.Address
+import android.location.Geocoder
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -13,12 +15,10 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MapStyleOptions
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 import hu.bme.mapdemo.databinding.ActivityMapsBinding
 import java.util.*
+import kotlin.concurrent.thread
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
     MyLocationManager.OnNewLocationAvailable {
@@ -89,18 +89,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         locationManager.startLocationMonitoring()
     }
 
+    var markerAtCurrentPosition: Marker? = null
 
-
-
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
@@ -108,7 +98,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
             R.raw.mymapstyle))
 
         val marker = LatLng(47.0, 19.0)
-        mMap.addMarker(MarkerOptions().position(marker).title("Marker in Hungary"))
+        markerAtCurrentPosition = mMap.addMarker(MarkerOptions().position(marker).title("Marker in Hungary"))
         mMap.moveCamera(CameraUpdateFactory.newLatLng(marker))
 
         //mMap.mapType = GoogleMap.MAP_TYPE_SATELLITE
@@ -124,25 +114,59 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
 
             newMarker?.isDraggable = true
 
-            //mMap.animateCamera(CameraUpdateFactory.newLatLng(it))
+            mMap.animateCamera(CameraUpdateFactory.newLatLng(it))
 
-            val random = Random(System.currentTimeMillis())
+            mMap.setOnMarkerClickListener {
+                geocodeLocation(it.position)
+                true
+            }
+
+
+/*            val random = Random(System.currentTimeMillis())
             val cameraPostion = CameraPosition.Builder()
                 .target(it)
                 .zoom(5f + random.nextInt(15))
                 .tilt(30f + random.nextInt(15))
                 .bearing(-45f + random.nextInt(90))
                 .build()
-            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPostion))
-
+            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPostion))*/
         }
+
     }
 
     override fun onNewLocation(location: Location) {
         binding.tvLocation.text = """
             ${location.latitude}
             ${location.longitude}
+            Accuracy: ${location.accuracy}
+            Speed: ${location.speed}
+            Alt: ${location.altitude}
         """.trimIndent()
+
+        val latLng = LatLng(location.latitude, location.longitude)
+        markerAtCurrentPosition?.position = latLng
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng))
+    }
+
+
+    private fun geocodeLocation(location: LatLng) {
+        thread {
+            try {
+                val gc = Geocoder(this, Locale.getDefault())
+                var addrs: List<Address> =
+                    gc.getFromLocation(location.latitude, location.longitude, 3)
+                val addr =
+                    "${addrs[0].getAddressLine(0)}, ${addrs[0].getAddressLine(1)}," +
+                            " ${addrs[0].getAddressLine(2)}"
+
+                runOnUiThread {
+                    Toast.makeText(this, addr, Toast.LENGTH_LONG).show()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(this@MapsActivity, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
 

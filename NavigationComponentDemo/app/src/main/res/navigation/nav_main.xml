@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/fragmentMain">
+
+    <fragment
+        android:id="@+id/fragmentMain"
+        android:name="hu.bme.aut.navigationcomponentdemo.FragmentMain"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_fragmentMain_to_fragmentDetails"
+            app:destination="@id/fragmentDetails" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/fragmentDetails"
+        android:name="hu.bme.aut.navigationcomponentdemo.FragmentDetails"
+        android:label="fragment_details"
+        tools:layout="@layout/fragment_details" >
+        <argument
+            android:name="person"
+            app:argType="hu.bme.aut.navigationcomponentdemo.Person" />
+    </fragment>
+
+
+</navigation>
