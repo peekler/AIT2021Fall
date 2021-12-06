@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">JetPackComposeDemo</string>
+    <string name="title_activity_demo">DemoActivity</string>
+    <string name="title_activity_demo_compose_list">DemoComposeListActivity</string>
+</resources>
