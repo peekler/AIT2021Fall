@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import hu.bme.layoutinflaterdemo.databinding.ActivityMainBinding
+import hu.bme.layoutinflaterdemo.databinding.LayoutDetailsBinding
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,13 +21,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun addDetailsElement() {
-        val detailsLayout = layoutInflater.inflate(R.layout.layout_details, null)
+        //val detailsLayout = layoutInflater.inflate(R.layout.layout_details, null)
+        val detailsLayoutBinding = LayoutDetailsBinding.inflate(layoutInflater)
 
-        detailsLayout.findViewById<Button>(R.id.btnDelete).setOnClickListener {
-            binding.layoutContent.removeView(detailsLayout)
+        detailsLayoutBinding.btnDelete.setOnClickListener {
+            binding.layoutContent.removeView(detailsLayoutBinding.root)
         }
 
-        binding.layoutContent.addView(detailsLayout)
+        binding.layoutContent.addView(detailsLayoutBinding.root)
     }
 
 }
